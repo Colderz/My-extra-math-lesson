@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "148442462757",
+    "firebase_url": "https://extralessonapp1.firebaseio.com",
+    "project_id": "extralessonapp1",
+    "storage_bucket": "extralessonapp1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:148442462757:android:360168aa94b4e4af979dcc",
+        "android_client_info": {
+          "package_name": "pakiet.arkadiuszzimny.extralessonapp1"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "148442462757-amggj2n72v06u52ti9doei8hsm4ik06i.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB8lDMv3Kbrnb_iEiRiGPxcPwTuZhjTiKM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "148442462757-amggj2n72v06u52ti9doei8hsm4ik06i.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
