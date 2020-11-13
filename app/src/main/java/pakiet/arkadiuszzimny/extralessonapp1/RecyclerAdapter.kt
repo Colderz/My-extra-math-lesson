@@ -8,9 +8,9 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 
-class RecyclerAdapter(studentsList: MutableList<String>): RecyclerView.Adapter<RecyclerAdapter.ViewHolder>(){
+class RecyclerAdapter(private val dataArrayList: ArrayList<DatabaseRow>): RecyclerView.Adapter<RecyclerAdapter.ViewHolder>(){
 
-    private var students: MutableList<String> = studentsList
+    //private var students: MutableList<String> = dataArrayList
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val v = LayoutInflater.from(parent.context).inflate(R.layout.editablecard_layout, parent, false)
@@ -18,26 +18,26 @@ class RecyclerAdapter(studentsList: MutableList<String>): RecyclerView.Adapter<R
     }
 
     override fun getItemCount(): Int {
-        return students.size
+        return dataArrayList.size
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.personName.text = students[position]
+        holder.personName.text = dataArrayList[holder.adapterPosition].imie
 
     }
 
     inner class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
-        var itemImage: ImageView
-        var personName: TextView
+        val itemImage: ImageView
+        val personName: TextView
 
         init {
             itemImage = itemView.findViewById(R.id.itemImage)
             personName = itemView.findViewById(R.id.personName)
 
-            itemView.setOnClickListener {
+            /*itemView.setOnClickListener {
                 val position: Int = adapterPosition
-                Toast.makeText(itemView.context, "Nacisnąłeś ${students[position]}", Toast.LENGTH_LONG).show()
-            }
+                //Toast.makeText(itemView.context, "Nacisnąłeś ${students[position]}", Toast.LENGTH_LONG).show()
+            */
         }
 
 
