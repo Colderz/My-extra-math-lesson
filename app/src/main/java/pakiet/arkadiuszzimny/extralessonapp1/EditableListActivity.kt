@@ -28,6 +28,10 @@ class EditableListActivity : AppCompatActivity() {
         setContentView(R.layout.activity_editable_list)
 
         studentsList.add("Karolina")
+        studentsList.add("Karolina")
+        studentsList.add("Karolina")
+        studentsList.add("Karolina")
+        studentsList.add("Karolina")
         studentsList.add("Eliza")
         studentsList.add("Roksana")
         studentsList.add("Oliwia")
