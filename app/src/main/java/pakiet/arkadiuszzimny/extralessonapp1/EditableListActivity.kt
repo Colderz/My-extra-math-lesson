@@ -77,9 +77,10 @@ class EditableListActivity : AppCompatActivity() {
         }
 
         fun undoDeleted(position: Int) {
-            Snackbar.make(recyclerView, "Usunięto ucznia: $deletedStudent", Snackbar.LENGTH_LONG).setAction("Cofnij", View.OnClickListener {
-                displayList.add(position, deletedStudent)
-                recyclerAdapter.notifyItemInserted(position)
+            Snackbar.make(recyclerView, "Usunięto ucznia: ${deletedStudent.imie}", Snackbar.LENGTH_LONG).setAction("Cofnij", View.OnClickListener {
+                val imie = deletedStudent.imie
+                val firebaseInput = DatabaseRow(imie)
+                myRef.child("${Date().time}").setValue(firebaseInput)
             }).show()
         }
 
@@ -93,20 +94,17 @@ class EditableListActivity : AppCompatActivity() {
                         .child("ArrayData")
                         .child(deletedStudent.id.toString())
                         .removeValue()
-                    Snackbar.make(recyclerView, "Usunięto ucznia: ${deletedStudent.imie}", Snackbar.LENGTH_LONG).setAction("Cofnij", View.OnClickListener {
-                        val imie = deletedStudent.imie
-                        val firebaseInput = DatabaseRow(imie)
-                        myRef.child("${Date().time}").setValue(firebaseInput)
-                    }).show()
+                    undoDeleted(position)
                 }
-                /*ItemTouchHelper.RIGHT -> {
+                ItemTouchHelper.RIGHT -> {
                     deletedStudent = displayList.get(position)
                     displayList.removeAt(position)
                     FirebaseDatabase.getInstance().getReference()
                         .child("ArrayData")
                         .child(deletedStudent.id.toString())
                         .removeValue()
-                }*/
+                    undoDeleted(position)
+                }
             }
         }
 
