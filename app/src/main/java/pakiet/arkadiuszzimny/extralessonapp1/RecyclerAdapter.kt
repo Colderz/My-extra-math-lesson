@@ -8,7 +8,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 
-class RecyclerAdapter(private val dataArrayList: ArrayList<DatabaseRow>): RecyclerView.Adapter<RecyclerAdapter.ViewHolder>(){
+class RecyclerAdapter(private val dataArrayList: ArrayList<Student>): RecyclerView.Adapter<RecyclerAdapter.ViewHolder>(){
 
     //private var students: MutableList<String> = dataArrayList
 

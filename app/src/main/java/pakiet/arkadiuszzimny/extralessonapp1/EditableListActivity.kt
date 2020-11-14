@@ -4,6 +4,7 @@ import android.content.Context
 import android.icu.text.Transliterator
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.SearchEvent
@@ -25,7 +26,7 @@ class EditableListActivity : AppCompatActivity() {
     private lateinit var myRef: DatabaseReference
     private lateinit var listOfItems: ArrayList<DatabaseRow>
     private lateinit var rv: RecyclerView
-    private var listOfStudents: ArrayList<Student> = ArrayList()
+    private lateinit var listOfStudents: ArrayList<Student>
 
     private lateinit var adapter: RecyclerAdapter
 
@@ -37,19 +38,10 @@ class EditableListActivity : AppCompatActivity() {
         myRef = firebase.getReference("ArrayData")
 
         recyclerView.layoutManager = LinearLayoutManager(this)
-        //listOfStudents = ArrayList()
         buttonAdd.setOnClickListener {
             val imie = studentName.text.toString()
-            var id = Date().time
-            var imieS: String = ""
-            listOfStudents.add(Student(id, imie))
-            for(student in listOfStudents) {
-                if(student.id == id) {
-                    imieS = student.imie
-                }
-            }
-            val firebaseInput = DatabaseRow(imieS)
-            myRef.child("${id}").setValue(firebaseInput)
+            val firebaseInput = DatabaseRow(imie)
+            myRef.child("${Date().time}").setValue(firebaseInput)
         }
 
         myRef.addValueEventListener(object: ValueEventListener{
@@ -59,11 +51,15 @@ class EditableListActivity : AppCompatActivity() {
 
             override fun onDataChange(snapshot: DataSnapshot) {
                 listOfItems = ArrayList()
+                listOfStudents = ArrayList()
                 for (i in snapshot.children) {
+                    val newId = i.key?.toLong()
+                    Log.d("infoid", "O to id chodzi: ${newId}")
                     val newRow = i.getValue(DatabaseRow::class.java)
                     listOfItems.add(newRow!!)
+                    listOfStudents.add(Student(newId!!, newRow.imie))
                 }
-                setupAdapter(listOfItems)
+                setupAdapter(listOfStudents)
             }
 
         })
@@ -71,7 +67,7 @@ class EditableListActivity : AppCompatActivity() {
 
 
 
-    private fun setupAdapter(arrayData: ArrayList<DatabaseRow>) {
+    private fun setupAdapter(arrayData: ArrayList<Student>) {
         recyclerView.adapter = RecyclerAdapter(arrayData)
     }
 
