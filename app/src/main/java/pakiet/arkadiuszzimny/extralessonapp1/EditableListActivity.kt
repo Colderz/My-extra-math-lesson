@@ -1,6 +1,10 @@
 package pakiet.arkadiuszzimny.extralessonapp1
 
 
+import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
+import android.graphics.drawable.Drawable
 import android.icu.text.Transliterator
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -8,8 +12,8 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-
 import androidx.appcompat.widget.SearchView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -27,8 +31,10 @@ class EditableListActivity : AppCompatActivity() {
     private lateinit var listOfStudents: ArrayList<Student>
     private lateinit var displayList: ArrayList<Student>
     private lateinit var deletedStudent: Student
-
     private lateinit var recyclerAdapter: RecyclerAdapter
+    private lateinit var deleteIcon: Drawable
+
+    private var swipeBackground: ColorDrawable = ColorDrawable(Color.parseColor("#fcfcfc"))
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,6 +48,7 @@ class EditableListActivity : AppCompatActivity() {
             val imie = studentName.text.toString()
             val firebaseInput = DatabaseRow(imie)
             myRef.child("${Date().time}").setValue(firebaseInput)
+            studentName.text.clear()
         }
 
         myRef.addValueEventListener(object: ValueEventListener{
@@ -63,6 +70,7 @@ class EditableListActivity : AppCompatActivity() {
             }
         })
 
+        deleteIcon = ContextCompat.getDrawable(this, R.drawable.ic_baseline_delete_24)!!
         val itemTouchHelper = ItemTouchHelper(simpleCallback)
         itemTouchHelper.attachToRecyclerView(recyclerView)
     }
@@ -74,6 +82,13 @@ class EditableListActivity : AppCompatActivity() {
             target: RecyclerView.ViewHolder
         ): Boolean {
             return true
+        }
+
+        fun firebaseDelete(Dstudent: Student) {
+            FirebaseDatabase.getInstance().getReference()
+                .child("ArrayData")
+                .child(Dstudent.id.toString())
+                .removeValue()
         }
 
         fun undoDeleted(position: Int) {
@@ -90,24 +105,42 @@ class EditableListActivity : AppCompatActivity() {
                 ItemTouchHelper.LEFT -> {
                     deletedStudent = displayList.get(position)
                     displayList.removeAt(position)
-                    FirebaseDatabase.getInstance().getReference()
-                        .child("ArrayData")
-                        .child(deletedStudent.id.toString())
-                        .removeValue()
+                    firebaseDelete(deletedStudent)
                     undoDeleted(position)
                 }
                 ItemTouchHelper.RIGHT -> {
                     deletedStudent = displayList.get(position)
                     displayList.removeAt(position)
-                    FirebaseDatabase.getInstance().getReference()
-                        .child("ArrayData")
-                        .child(deletedStudent.id.toString())
-                        .removeValue()
+                    firebaseDelete(deletedStudent)
                     undoDeleted(position)
                 }
             }
         }
 
+        override fun onChildDraw(
+            c: Canvas,
+            recyclerView: RecyclerView,
+            viewHolder: RecyclerView.ViewHolder,
+            dX: Float,
+            dY: Float,
+            actionState: Int,
+            isCurrentlyActive: Boolean
+        ) {
+            val itemView = viewHolder.itemView
+            val iconMargin = (itemView.height - deleteIcon.intrinsicHeight)/2
+            if(dX > 0) {
+                swipeBackground.setBounds(itemView.left, itemView.top, dX.toInt(), itemView.bottom)
+                deleteIcon.setBounds(itemView.left + iconMargin, itemView.top + iconMargin, itemView.left + iconMargin + deleteIcon.intrinsicWidth, itemView.bottom - iconMargin)
+            } else {
+                swipeBackground.setBounds(itemView.right+dX.toInt(), itemView.top, itemView.right, itemView.bottom)
+                deleteIcon.setBounds(itemView.right - iconMargin - deleteIcon.intrinsicWidth, itemView.top + iconMargin, itemView.right - iconMargin, itemView.bottom - iconMargin)
+            }
+
+            swipeBackground.draw(c)
+            deleteIcon.draw(c)
+
+            super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -149,7 +182,6 @@ class EditableListActivity : AppCompatActivity() {
         recyclerAdapter = RecyclerAdapter(arrayData)
         recyclerView.adapter = RecyclerAdapter(arrayData)
     }
-
 
 
 }
