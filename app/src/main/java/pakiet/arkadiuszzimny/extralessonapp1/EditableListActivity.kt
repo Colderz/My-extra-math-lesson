@@ -1,15 +1,14 @@
 package pakiet.arkadiuszzimny.extralessonapp1
 
-import android.content.Context
+
 import android.icu.text.Transliterator
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import android.view.SearchEvent
 import android.view.View
-import android.widget.Adapter
+
 import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -25,12 +24,11 @@ class EditableListActivity : AppCompatActivity() {
 
     private lateinit var myRef: DatabaseReference
     private lateinit var listOfItems: ArrayList<DatabaseRow>
-    private lateinit var rv: RecyclerView
     private lateinit var listOfStudents: ArrayList<Student>
     private lateinit var displayList: ArrayList<Student>
     private lateinit var deletedStudent: Student
 
-    private lateinit var adapter: RecyclerAdapter
+    private lateinit var recyclerAdapter: RecyclerAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -65,6 +63,52 @@ class EditableListActivity : AppCompatActivity() {
             }
         })
 
+        val itemTouchHelper = ItemTouchHelper(simpleCallback)
+        itemTouchHelper.attachToRecyclerView(recyclerView)
+    }
+
+    private var simpleCallback = object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT.or(ItemTouchHelper.RIGHT)) {
+        override fun onMove(
+            recyclerView: RecyclerView,
+            viewHolder: RecyclerView.ViewHolder,
+            target: RecyclerView.ViewHolder
+        ): Boolean {
+            return true
+        }
+
+        fun undoDeleted(position: Int) {
+            Snackbar.make(recyclerView, "Usunięto ucznia: $deletedStudent", Snackbar.LENGTH_LONG).setAction("Cofnij", View.OnClickListener {
+                displayList.add(position, deletedStudent)
+                recyclerAdapter.notifyItemInserted(position)
+            }).show()
+        }
+
+        override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+            var position = viewHolder.adapterPosition
+            when(direction) {
+                ItemTouchHelper.LEFT -> {
+                    deletedStudent = displayList.get(position)
+                    displayList.removeAt(position)
+                    FirebaseDatabase.getInstance().getReference()
+                        .child("ArrayData")
+                        .child(deletedStudent.id.toString())
+                        .removeValue()
+                    Snackbar.make(recyclerView, "Usunięto ucznia: ${deletedStudent.imie}", Snackbar.LENGTH_LONG).setAction("Cofnij", View.OnClickListener {
+                        val imie = deletedStudent.imie
+                        val firebaseInput = DatabaseRow(imie)
+                        myRef.child("${Date().time}").setValue(firebaseInput)
+                    }).show()
+                }
+                /*ItemTouchHelper.RIGHT -> {
+                    deletedStudent = displayList.get(position)
+                    displayList.removeAt(position)
+                    FirebaseDatabase.getInstance().getReference()
+                        .child("ArrayData")
+                        .child(deletedStudent.id.toString())
+                        .removeValue()
+                }*/
+            }
+        }
 
     }
 
@@ -104,6 +148,7 @@ class EditableListActivity : AppCompatActivity() {
     
 
     private fun setupAdapter(arrayData: ArrayList<Student>) {
+        recyclerAdapter = RecyclerAdapter(arrayData)
         recyclerView.adapter = RecyclerAdapter(arrayData)
     }
 
