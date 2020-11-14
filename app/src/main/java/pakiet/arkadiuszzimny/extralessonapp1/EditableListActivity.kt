@@ -27,6 +27,8 @@ class EditableListActivity : AppCompatActivity() {
     private lateinit var listOfItems: ArrayList<DatabaseRow>
     private lateinit var rv: RecyclerView
     private lateinit var listOfStudents: ArrayList<Student>
+    private lateinit var displayList: ArrayList<Student>
+    private lateinit var deletedStudent: Student
 
     private lateinit var adapter: RecyclerAdapter
 
@@ -45,13 +47,12 @@ class EditableListActivity : AppCompatActivity() {
         }
 
         myRef.addValueEventListener(object: ValueEventListener{
-            override fun onCancelled(error: DatabaseError) {
-
-            }
+            override fun onCancelled(error: DatabaseError) {}
 
             override fun onDataChange(snapshot: DataSnapshot) {
                 listOfItems = ArrayList()
                 listOfStudents = ArrayList()
+                displayList = ArrayList()
                 for (i in snapshot.children) {
                     val newId = i.key?.toLong()
                     Log.d("infoid", "O to id chodzi: ${newId}")
@@ -59,13 +60,48 @@ class EditableListActivity : AppCompatActivity() {
                     listOfItems.add(newRow!!)
                     listOfStudents.add(Student(newId!!, newRow.imie))
                 }
-                setupAdapter(listOfStudents)
+                displayList.addAll(listOfStudents)
+                setupAdapter(displayList)
             }
-
         })
+
+
     }
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.search_menu, menu)
+        var item: MenuItem = menu!!.findItem(R.id.action_search)
+        if(item != null) {
+            var searchView = item.actionView as SearchView
+            searchView.setOnQueryTextListener(object: SearchView.OnQueryTextListener{
+                override fun onQueryTextSubmit(query: String?): Boolean {
+                    return true
+                }
 
+                override fun onQueryTextChange(newText: String?): Boolean {
+                    if(newText!!.isNotEmpty()) {
+                        displayList.clear()
+                        var search = newText.toLowerCase(Locale.getDefault())
+                        for(student in listOfStudents) {
+                            if(student.imie.toLowerCase(Locale.getDefault()).contains(search)) {
+                                displayList.add(student)
+                            }
+                            recyclerView.adapter!!.notifyDataSetChanged()
+                        }
+                    }else {
+                        displayList.clear()
+                        displayList.addAll(listOfStudents)
+                        recyclerView.adapter!!.notifyDataSetChanged()
+                    }
+                    return true
+                }
+
+            })
+        }
+
+        return super.onCreateOptionsMenu(menu)
+    }
+    
 
     private fun setupAdapter(arrayData: ArrayList<Student>) {
         recyclerView.adapter = RecyclerAdapter(arrayData)
