@@ -26,6 +26,11 @@ class RecyclerAdapter(private val dataArrayList: ArrayList<DatabaseRow>): Recycl
 
     }
 
+    fun deleteItem(pos: Int) {
+        dataArrayList.removeAt(pos)
+        notifyItemRemoved(pos)
+    }
+
     inner class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
         val itemImage: ImageView
         val personName: TextView

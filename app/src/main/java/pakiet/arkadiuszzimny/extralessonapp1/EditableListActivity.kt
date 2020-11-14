@@ -24,6 +24,10 @@ class EditableListActivity : AppCompatActivity() {
 
     private lateinit var myRef: DatabaseReference
     private lateinit var listOfItems: ArrayList<DatabaseRow>
+    private lateinit var rv: RecyclerView
+    private var listOfStudents: ArrayList<Student> = ArrayList()
+
+    private lateinit var adapter: RecyclerAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,13 +36,20 @@ class EditableListActivity : AppCompatActivity() {
         val firebase = FirebaseDatabase.getInstance()
         myRef = firebase.getReference("ArrayData")
 
-
         recyclerView.layoutManager = LinearLayoutManager(this)
+        //listOfStudents = ArrayList()
         buttonAdd.setOnClickListener {
             val imie = studentName.text.toString()
-
-            val firebaseInput = DatabaseRow(imie)
-            myRef.child("${Date().time}").setValue(firebaseInput)
+            var id = Date().time
+            var imieS: String = ""
+            listOfStudents.add(Student(id, imie))
+            for(student in listOfStudents) {
+                if(student.id == id) {
+                    imieS = student.imie
+                }
+            }
+            val firebaseInput = DatabaseRow(imieS)
+            myRef.child("${id}").setValue(firebaseInput)
         }
 
         myRef.addValueEventListener(object: ValueEventListener{
@@ -56,7 +67,6 @@ class EditableListActivity : AppCompatActivity() {
             }
 
         })
-
     }
 
 
@@ -64,4 +74,7 @@ class EditableListActivity : AppCompatActivity() {
     private fun setupAdapter(arrayData: ArrayList<DatabaseRow>) {
         recyclerView.adapter = RecyclerAdapter(arrayData)
     }
+
+
+
 }
