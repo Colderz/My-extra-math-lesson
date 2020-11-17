@@ -66,6 +66,7 @@ class EditableListActivity : AppCompatActivity() {
                     listOfStudents.add(Student(newId!!, newRow.imie))
                 }
                 displayList.addAll(listOfStudents)
+                displayList.sortBy { it.imie }
                 setupAdapter(displayList)
             }
         })
