@@ -167,6 +167,7 @@ class EditableListActivity : AppCompatActivity() {
                     }else {
                         displayList.clear()
                         displayList.addAll(listOfStudents)
+                        displayList.sortBy { it.imie }
                         recyclerView.adapter!!.notifyDataSetChanged()
                     }
                     return true
