@@ -38,11 +38,6 @@ class RecyclerAdapter(private val dataArrayList: ArrayList<Student>): RecyclerVi
         init {
             itemImage = itemView.findViewById(R.id.itemImage)
             personName = itemView.findViewById(R.id.personName)
-
-            /*itemView.setOnClickListener {
-                val position: Int = adapterPosition
-                //Toast.makeText(itemView.context, "Nacisnąłeś ${students[position]}", Toast.LENGTH_LONG).show()
-            */
         }
 
 

@@ -3,10 +3,15 @@ package pakiet.arkadiuszzimny.extralessonapp1
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
+import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.activity_display_list.*
 import kotlinx.android.synthetic.main.activity_editable_list.*
+import java.util.*
+import kotlin.collections.ArrayList
 
 class DisplayListActivity : AppCompatActivity() {
 
@@ -19,7 +24,6 @@ class DisplayListActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_display_list)
-        supportActionBar?.hide()
 
         val firebase = FirebaseDatabase.getInstance()
         myRef2 = firebase.getReference("ArrayData")
@@ -45,6 +49,42 @@ class DisplayListActivity : AppCompatActivity() {
                 setupAdapter(displayList)
             }
         })
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.search_menu, menu)
+        var item: MenuItem = menu!!.findItem(R.id.action_search)
+        if(item != null) {
+            var searchView = item.actionView as SearchView
+            searchView.setOnQueryTextListener(object: SearchView.OnQueryTextListener{
+                override fun onQueryTextSubmit(query: String?): Boolean {
+                    return true
+                }
+
+                override fun onQueryTextChange(newText: String?): Boolean {
+                    if(newText!!.isNotEmpty()) {
+                        displayList.clear()
+                        var search = newText.toLowerCase(Locale.getDefault())
+                        for(student in listOfStudents) {
+                            if(student.imie.toLowerCase(Locale.getDefault()).contains(search)) {
+                                displayList.add(student)
+                                displayList.sortBy { it.imie }
+                            }
+                            recyclerView2.adapter!!.notifyDataSetChanged()
+                        }
+                    }else {
+                        displayList.clear()
+                        displayList.addAll(listOfStudents)
+                        displayList.sortBy { it.imie }
+                        recyclerView2.adapter!!.notifyDataSetChanged()
+                    }
+                    return true
+                }
+
+            })
+        }
+
+        return super.onCreateOptionsMenu(menu)
     }
     private fun setupAdapter(arrayData: ArrayList<Student>) {
         recyclerAdapter = RecyclerAdapter2(arrayData)

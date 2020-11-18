@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import de.hdodenhof.circleimageview.CircleImageView
 
@@ -40,6 +41,11 @@ class RecyclerAdapter2(private val dataArrayList: ArrayList<Student>) : Recycler
             level = itemView.findViewById(R.id.level)
             lastDate = itemView.findViewById(R.id.lastDate)
             standardCost = itemView.findViewById(R.id.standardCost)
+
+            itemView.setOnClickListener {
+                val position = adapterPosition
+                Toast.makeText(itemView.context, "Tutaj pojawi się okno z edycją i ustawianiem, to dla ucznia: ${dataArrayList[position].imie}", Toast.LENGTH_LONG).show()
+            }
 
         }
     }
