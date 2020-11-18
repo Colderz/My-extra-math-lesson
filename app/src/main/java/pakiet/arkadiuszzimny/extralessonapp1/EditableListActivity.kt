@@ -161,6 +161,7 @@ class EditableListActivity : AppCompatActivity() {
                         for(student in listOfStudents) {
                             if(student.imie.toLowerCase(Locale.getDefault()).contains(search)) {
                                 displayList.add(student)
+                                displayList.sortBy { it.imie }
                             }
                             recyclerView.adapter!!.notifyDataSetChanged()
                         }
