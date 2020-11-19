@@ -30,6 +30,7 @@ class RecyclerAdapter2(private val dataArrayList: ArrayList<Student>) : Recycler
         holder.level.text = dataArrayList[holder.adapterPosition].poziom
         holder.lastDate.text = dataArrayList[holder.adapterPosition].ostatniaLekcja
         holder.standardCost.text = dataArrayList[holder.adapterPosition].stawka
+        //holder.studentId.text = dataArrayList[holder.adapterPosition].id.toString()
     }
 
 
@@ -39,6 +40,7 @@ class RecyclerAdapter2(private val dataArrayList: ArrayList<Student>) : Recycler
         val level: TextView
         val lastDate: TextView
         val standardCost: TextView
+        //val studentId: TextView
 
         init {
             profileImage = itemView.findViewById(R.id.profile_image)
@@ -46,6 +48,7 @@ class RecyclerAdapter2(private val dataArrayList: ArrayList<Student>) : Recycler
             level = itemView.findViewById(R.id.level)
             lastDate = itemView.findViewById(R.id.lastDate)
             standardCost = itemView.findViewById(R.id.standardCost)
+            //studentId = itemView.findViewById(R.id.studentId)
 
            itemView.setOnClickListener {
                val dialogView = LayoutInflater.from(parent.context).inflate(R.layout.dialog_layout, null)

@@ -5,11 +5,13 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.activity_display_list.*
 import kotlinx.android.synthetic.main.activity_editable_list.*
+import kotlinx.android.synthetic.main.dialog_layout.*
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -29,6 +31,9 @@ class DisplayListActivity : AppCompatActivity() {
         myRef2 = firebase.getReference("ArrayData")
 
         recyclerView2.layoutManager = LinearLayoutManager(this)
+        //saveInfo.setOnClickListener {
+            //Toast.makeText(this, studentId.text, Toast.LENGTH_LONG).show()
+        //}
 
         myRef2.addValueEventListener(object: ValueEventListener {
             override fun onCancelled(error: DatabaseError) {}
