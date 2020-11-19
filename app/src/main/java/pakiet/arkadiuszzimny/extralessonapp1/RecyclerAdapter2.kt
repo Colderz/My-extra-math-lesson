@@ -1,10 +1,15 @@
 package pakiet.arkadiuszzimny.extralessonapp1
 
+
+import android.app.Dialog
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.Window
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.RecyclerView
 import de.hdodenhof.circleimageview.CircleImageView
 
@@ -13,7 +18,7 @@ class RecyclerAdapter2(private val dataArrayList: ArrayList<Student>) : Recycler
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val v = LayoutInflater.from(parent.context).inflate(R.layout.studentcard_layout, parent, false)
-        return ViewHolder(v)
+        return ViewHolder(v, parent)
     }
 
     override fun getItemCount(): Int {
@@ -22,13 +27,13 @@ class RecyclerAdapter2(private val dataArrayList: ArrayList<Student>) : Recycler
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.name.text = dataArrayList[holder.adapterPosition].imie
-        holder.level.text = "II LICEUM"
-        holder.lastDate.text = "02-11-2020"
-        holder.standardCost.text = "30 zł"
+        holder.level.text = dataArrayList[holder.adapterPosition].poziom
+        holder.lastDate.text = dataArrayList[holder.adapterPosition].ostatniaLekcja
+        holder.standardCost.text = dataArrayList[holder.adapterPosition].stawka
     }
 
 
-    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class ViewHolder(itemView: View, parent: ViewGroup) : RecyclerView.ViewHolder(itemView) {
         val profileImage: CircleImageView
         val name: TextView
         val level: TextView
@@ -42,11 +47,11 @@ class RecyclerAdapter2(private val dataArrayList: ArrayList<Student>) : Recycler
             lastDate = itemView.findViewById(R.id.lastDate)
             standardCost = itemView.findViewById(R.id.standardCost)
 
-            itemView.setOnClickListener {
-                val position = adapterPosition
-                Toast.makeText(itemView.context, "Tutaj pojawi się okno z edycją i ustawianiem, to dla ucznia: ${dataArrayList[position].imie}", Toast.LENGTH_LONG).show()
-            }
-
+           itemView.setOnClickListener {
+               val dialogView = LayoutInflater.from(parent.context).inflate(R.layout.dialog_layout, null)
+               val builder = AlertDialog.Builder(parent.context, R.style.CustomDialog).setView(dialogView)
+               builder.show()
+           }
         }
     }
 

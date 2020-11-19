@@ -42,7 +42,7 @@ class DisplayListActivity : AppCompatActivity() {
                     Log.d("infoid", "O to id chodzi: ${newId}")
                     val newRow = i.getValue(DatabaseRow::class.java)
                     listOfItems.add(newRow!!)
-                    listOfStudents.add(Student(newId!!, newRow.imie))
+                    listOfStudents.add(Student(newId!!, newRow.imie, newRow.poziom, newRow.ostatniaLekcja, newRow.stawka))
                 }
                 displayList.addAll(listOfStudents)
                 displayList.sortBy { it.imie }
@@ -86,6 +86,7 @@ class DisplayListActivity : AppCompatActivity() {
 
         return super.onCreateOptionsMenu(menu)
     }
+
     private fun setupAdapter(arrayData: ArrayList<Student>) {
         recyclerAdapter = RecyclerAdapter2(arrayData)
         recyclerView2.adapter = RecyclerAdapter2(arrayData)

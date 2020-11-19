@@ -46,7 +46,10 @@ class EditableListActivity : AppCompatActivity() {
         recyclerView.layoutManager = LinearLayoutManager(this)
         buttonAdd.setOnClickListener {
             val imie = studentName.text.toString()
-            val firebaseInput = DatabaseRow(imie)
+            val poziom = "Brak"
+            val ostatniaLekcja = "Brak"
+            val stawka = "Brak"
+            val firebaseInput = DatabaseRow(imie, poziom, ostatniaLekcja, stawka)
             myRef.child("${Date().time}").setValue(firebaseInput)
             studentName.text.clear()
         }
@@ -63,7 +66,7 @@ class EditableListActivity : AppCompatActivity() {
                     Log.d("infoid", "O to id chodzi: ${newId}")
                     val newRow = i.getValue(DatabaseRow::class.java)
                     listOfItems.add(newRow!!)
-                    listOfStudents.add(Student(newId!!, newRow.imie))
+                    listOfStudents.add(Student(newId!!, newRow.imie, newRow.poziom, newRow.ostatniaLekcja, newRow.stawka))
                 }
                 displayList.addAll(listOfStudents)
                 displayList.sortBy { it.imie }
@@ -95,7 +98,10 @@ class EditableListActivity : AppCompatActivity() {
         fun undoDeleted(position: Int) {
             Snackbar.make(recyclerView, "Usunięto ucznia: ${deletedStudent.imie}", Snackbar.LENGTH_LONG).setAction("Cofnij", View.OnClickListener {
                 val imie = deletedStudent.imie
-                val firebaseInput = DatabaseRow(imie)
+                val poziom = "Brak"
+                val ostatniaLekcja = "Brak"
+                val stawka = "Brak"
+                val firebaseInput = DatabaseRow(imie, poziom, ostatniaLekcja, stawka)
                 myRef.child("${Date().time}").setValue(firebaseInput)
             }).show()
         }

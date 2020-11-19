@@ -177,7 +177,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:gravity="center"
-                            android:text="Dodaj lub usuń nowego ucznia"
+                            android:text="Usuń lub dodaj nowego ucznia"
                             android:padding="5dp"
                             android:textSize="10dp"
                             android:paddingHorizontal="10dp"
