@@ -1,13 +1,22 @@
 package pakiet.arkadiuszzimny.extralessonapp1
 
+import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
+import android.graphics.drawable.Drawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
+import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.activity_display_list.*
 import kotlinx.android.synthetic.main.activity_editable_list.*
@@ -22,6 +31,9 @@ class DisplayListActivity : AppCompatActivity() {
     private lateinit var listOfStudents: ArrayList<Student>
     private lateinit var displayList: ArrayList<Student>
     private lateinit var recyclerAdapter: RecyclerAdapter2
+    private lateinit var deletedStudent: Student
+    private lateinit var deleteIcon: Drawable
+    private var swipeBackground: ColorDrawable = ColorDrawable(Color.parseColor("#fcfcfc"))
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,9 +43,6 @@ class DisplayListActivity : AppCompatActivity() {
         myRef2 = firebase.getReference("ArrayData")
 
         recyclerView2.layoutManager = LinearLayoutManager(this)
-        //saveInfo.setOnClickListener {
-            //Toast.makeText(this, studentId.text, Toast.LENGTH_LONG).show()
-        //}
 
         myRef2.addValueEventListener(object: ValueEventListener {
             override fun onCancelled(error: DatabaseError) {}
@@ -54,6 +63,81 @@ class DisplayListActivity : AppCompatActivity() {
                 setupAdapter(displayList)
             }
         })
+        deleteIcon = ContextCompat.getDrawable(this, R.drawable.ic_baseline_delete_24)!!
+        val itemTouchHelper = ItemTouchHelper(simpleCallback)
+        itemTouchHelper.attachToRecyclerView(recyclerView2)
+    }
+
+    private var simpleCallback = object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT.or(
+        ItemTouchHelper.RIGHT)) {
+        override fun onMove(
+            recyclerView: RecyclerView,
+            viewHolder: RecyclerView.ViewHolder,
+            target: RecyclerView.ViewHolder
+        ): Boolean {
+            return true
+        }
+
+        fun firebaseDelete(Dstudent: Student) {
+            FirebaseDatabase.getInstance().getReference()
+                .child("ArrayData")
+                .child(Dstudent.id.toString())
+                .removeValue()
+        }
+
+        fun undoDeleted(position: Int) {
+            Snackbar.make(recyclerView2, "Usunięto ucznia: ${deletedStudent.imie}", Snackbar.LENGTH_LONG).setAction("Cofnij", View.OnClickListener {
+                val imie = deletedStudent.imie
+                val poziom = "Brak"
+                val ostatniaLekcja = "Brak"
+                val stawka = "Brak"
+                val firebaseInput = DatabaseRow(imie, poziom, ostatniaLekcja, stawka)
+                myRef2.child("${Date().time}").setValue(firebaseInput)
+            }).show()
+        }
+
+        override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+            var position = viewHolder.adapterPosition
+            when(direction) {
+                ItemTouchHelper.LEFT -> {
+                    deletedStudent = displayList.get(position)
+                    displayList.removeAt(position)
+                    firebaseDelete(deletedStudent)
+                    undoDeleted(position)
+                }
+                ItemTouchHelper.RIGHT -> {
+                    deletedStudent = displayList.get(position)
+                    displayList.removeAt(position)
+                    firebaseDelete(deletedStudent)
+                    undoDeleted(position)
+                }
+            }
+        }
+
+        override fun onChildDraw(
+            c: Canvas,
+            recyclerView2: RecyclerView,
+            viewHolder2: RecyclerView.ViewHolder,
+            dX: Float,
+            dY: Float,
+            actionState: Int,
+            isCurrentlyActive: Boolean
+        ) {
+            val itemView = viewHolder2.itemView
+            val iconMargin = (itemView.height - deleteIcon.intrinsicHeight)/2
+            if(dX > 0) {
+                swipeBackground.setBounds(itemView.left, itemView.top, dX.toInt(), itemView.bottom)
+                deleteIcon.setBounds(itemView.left + iconMargin, itemView.top + iconMargin, itemView.left + iconMargin + deleteIcon.intrinsicWidth, itemView.bottom - iconMargin)
+            } else {
+                swipeBackground.setBounds(itemView.right+dX.toInt(), itemView.top, itemView.right, itemView.bottom)
+                deleteIcon.setBounds(itemView.right - iconMargin - deleteIcon.intrinsicWidth, itemView.top + iconMargin, itemView.right - iconMargin, itemView.bottom - iconMargin)
+            }
+
+            swipeBackground.draw(c)
+            deleteIcon.draw(c)
+
+            super.onChildDraw(c, recyclerView2, viewHolder2, dX, dY, actionState, isCurrentlyActive)
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
