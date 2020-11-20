@@ -7,10 +7,12 @@ import android.graphics.drawable.Drawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.SearchView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -21,6 +23,7 @@ import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.activity_display_list.*
 import kotlinx.android.synthetic.main.activity_editable_list.*
 import kotlinx.android.synthetic.main.dialog_layout.*
+import kotlinx.android.synthetic.main.newstudent_dialog_layout.*
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -43,6 +46,11 @@ class DisplayListActivity : AppCompatActivity() {
         myRef2 = firebase.getReference("ArrayData")
 
         recyclerView2.layoutManager = LinearLayoutManager(this)
+        addButton.setOnClickListener {
+            val dialogView = LayoutInflater.from(this).inflate(R.layout.newstudent_dialog_layout, null)
+            val builder = AlertDialog.Builder(this, R.style.CustomDialog).setView(dialogView)
+            builder.show()
+        }
 
         myRef2.addValueEventListener(object: ValueEventListener {
             override fun onCancelled(error: DatabaseError) {}
@@ -180,4 +188,15 @@ class DisplayListActivity : AppCompatActivity() {
         recyclerAdapter = RecyclerAdapter2(arrayData)
         recyclerView2.adapter = RecyclerAdapter2(arrayData)
     }
+
+    fun addStudentInfo(view: View) {
+        val nazwa = studentNameDialog.text.toString()
+        val poziom = studentLevel.text.toString()
+        val ostatniaLekcja = "Brak"
+        val stawka = studentCostDialog.text.toString()
+        val firebaseInput = DatabaseRow(nazwa, poziom, ostatniaLekcja, stawka)
+        myRef2.child(nazwa).setValue(firebaseInput)
+        studentNameDialog.text.clear()
+        studentLevel.text.clear()
+        studentCostDialog.text.clear()}
 }

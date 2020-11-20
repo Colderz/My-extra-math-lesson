@@ -11,36 +11,51 @@
         android:orientation="vertical"
         android:gravity="center_horizontal"
         android:layout_marginTop="50dp">
-        
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Klaudia"
+            android:text="Nowy uczeń"
             android:textColor="@android:color/white"
             android:textStyle="bold"
             android:textSize="25sp"
-            android:layout_marginTop="85dp"/>
+            android:layout_marginTop="65dp"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:text="Edycja"
+            android:textSize="14sp"
+            android:text="Wprowadź dane"
             android:textColor="@android:color/white"
-            android:layout_marginTop="2dp"
-            android:layout_marginBottom="10dp" />
+            android:layout_marginBottom="10dp"/>
 
-            <TextView
-                android:id="@+id/studentId"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text=""
-                android:textSize="1sp"
-                android:textColor="@android:color/transparent"/>
-
+        <TextView
+            android:id="@+id/studentId"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textSize="1sp"
+            android:textColor="@android:color/transparent"/>
 
         <EditText
-            android:id="@+id/studentLevel1"
+            android:id="@+id/studentNameDialog"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:background="@android:color/white"
+            android:drawablePadding="12dp"
+            android:paddingLeft="10dp"
+            android:inputType="textPersonName"
+            android:hint="Wprowadź nazwę karty/imie"
+            android:textSize="13sp"
+            android:drawableStart="@drawable/ic_baseline_emoji_people_24" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@color/lightGray" />
+
+        <EditText
+            android:id="@+id/studentLevel"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:background="@android:color/white"
@@ -57,7 +72,7 @@
             android:background="@color/lightGray" />
 
         <EditText
-            android:id="@+id/studentCost1"
+            android:id="@+id/studentCostDialog"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:paddingLeft="10dp"
@@ -74,11 +89,12 @@
             android:background="@color/lightGray" />
 
         <Button
-            android:id="@+id/saveInfo1"
+            android:id="@+id/saveInfo"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:background="@android:color/white"
-            android:text="Zatwierdź" />
+            android:text="DODAJ"
+            android:onClick="addStudentInfo"/>
 
 
 
@@ -91,7 +107,7 @@
         android:padding="10dp"
         android:layout_centerHorizontal="true"
         android:layout_alignParentTop="true"/>
-    
+
 </RelativeLayout>
 
 

@@ -50,7 +50,7 @@ class EditableListActivity : AppCompatActivity() {
             val ostatniaLekcja = "Brak"
             val stawka = "Brak"
             val firebaseInput = DatabaseRow(imie, poziom, ostatniaLekcja, stawka)
-            myRef.child("${Date().time}").setValue(firebaseInput)
+            myRef.child(imie).setValue(firebaseInput)
             studentName.text.clear()
         }
 
