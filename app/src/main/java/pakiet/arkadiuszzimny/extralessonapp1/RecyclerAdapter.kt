@@ -22,7 +22,7 @@ class RecyclerAdapter(private val dataArrayList: ArrayList<Student>): RecyclerVi
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.personName.text = dataArrayList[holder.adapterPosition].imie
+        holder.personName.text = dataArrayList[holder.adapterPosition].nazwa
 
     }
 

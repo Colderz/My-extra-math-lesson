@@ -11,6 +11,8 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 import de.hdodenhof.circleimageview.CircleImageView
 
 class RecyclerAdapter2(private val dataArrayList: ArrayList<Student>) : RecyclerView.Adapter<RecyclerAdapter2.ViewHolder>() {
@@ -26,7 +28,7 @@ class RecyclerAdapter2(private val dataArrayList: ArrayList<Student>) : Recycler
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.name.text = dataArrayList[holder.adapterPosition].imie
+        holder.name.text = dataArrayList[holder.adapterPosition].nazwa
         holder.level.text = dataArrayList[holder.adapterPosition].poziom
         holder.lastDate.text = dataArrayList[holder.adapterPosition].ostatniaLekcja
         holder.standardCost.text = dataArrayList[holder.adapterPosition].stawka
@@ -54,6 +56,9 @@ class RecyclerAdapter2(private val dataArrayList: ArrayList<Student>) : Recycler
                val dialogView = LayoutInflater.from(parent.context).inflate(R.layout.dialog_layout, null)
                val builder = AlertDialog.Builder(parent.context, R.style.CustomDialog).setView(dialogView)
                builder.show()
+               val databaseReference = FirebaseDatabase.getInstance().getReference().child("ArrayData").child("iii")
+               databaseReference.child("poziom").setValue("No coś jest")
+
            }
         }
     }

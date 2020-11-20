@@ -60,14 +60,14 @@ class DisplayListActivity : AppCompatActivity() {
                 listOfStudents = ArrayList()
                 displayList = ArrayList()
                 for (i in snapshot.children) {
-                    val newId = i.key?.toLong()
+                    val newId = i.key?.toString()
                     Log.d("infoid", "O to id chodzi: ${newId}")
                     val newRow = i.getValue(DatabaseRow::class.java)
                     listOfItems.add(newRow!!)
-                    listOfStudents.add(Student(newId!!, newRow.imie, newRow.poziom, newRow.ostatniaLekcja, newRow.stawka))
+                    listOfStudents.add(Student(newId!!, newRow.poziom, newRow.ostatniaLekcja, newRow.stawka))
                 }
                 displayList.addAll(listOfStudents)
-                displayList.sortBy { it.imie }
+                displayList.sortBy { it.nazwa }
                 setupAdapter(displayList)
             }
         })
@@ -89,18 +89,18 @@ class DisplayListActivity : AppCompatActivity() {
         fun firebaseDelete(Dstudent: Student) {
             FirebaseDatabase.getInstance().getReference()
                 .child("ArrayData")
-                .child(Dstudent.id.toString())
+                .child(Dstudent.nazwa)
                 .removeValue()
         }
 
         fun undoDeleted(position: Int) {
-            Snackbar.make(recyclerView2, "Usunięto ucznia: ${deletedStudent.imie}", Snackbar.LENGTH_LONG).setAction("Cofnij", View.OnClickListener {
-                val imie = deletedStudent.imie
+            Snackbar.make(recyclerView2, "Usunięto ucznia: ${deletedStudent.nazwa}", Snackbar.LENGTH_LONG).setAction("Cofnij", View.OnClickListener {
+                val nazwa = deletedStudent.nazwa
                 val poziom = "Brak"
                 val ostatniaLekcja = "Brak"
                 val stawka = "Brak"
-                val firebaseInput = DatabaseRow(imie, poziom, ostatniaLekcja, stawka)
-                myRef2.child("${Date().time}").setValue(firebaseInput)
+                val firebaseInput = DatabaseRow(nazwa, poziom, ostatniaLekcja, stawka)
+                myRef2.child(nazwa).setValue(firebaseInput)
             }).show()
         }
 
@@ -163,16 +163,16 @@ class DisplayListActivity : AppCompatActivity() {
                         displayList.clear()
                         var search = newText.toLowerCase(Locale.getDefault())
                         for(student in listOfStudents) {
-                            if(student.imie.toLowerCase(Locale.getDefault()).contains(search)) {
+                            if(student.nazwa.toLowerCase(Locale.getDefault()).contains(search)) {
                                 displayList.add(student)
-                                displayList.sortBy { it.imie }
+                                displayList.sortBy { it.nazwa }
                             }
                             recyclerView2.adapter!!.notifyDataSetChanged()
                         }
                     }else {
                         displayList.clear()
                         displayList.addAll(listOfStudents)
-                        displayList.sortBy { it.imie }
+                        displayList.sortBy { it.nazwa }
                         recyclerView2.adapter!!.notifyDataSetChanged()
                     }
                     return true
