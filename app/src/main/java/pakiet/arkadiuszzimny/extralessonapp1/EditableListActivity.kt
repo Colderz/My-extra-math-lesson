@@ -50,7 +50,8 @@ class EditableListActivity : AppCompatActivity() {
             val ostatniaLekcja = "Brak"
             val stawka = "Brak"
             val firebaseInput = DatabaseRow(nazwa, poziom, ostatniaLekcja, stawka)
-            myRef.child(nazwa).setValue(firebaseInput)
+            //myRef.child(nazwa).setValue(firebaseInput)
+            myRef.child("${Date().time}").setValue(firebaseInput)
             studentName.text.clear()
         }
 
@@ -62,11 +63,11 @@ class EditableListActivity : AppCompatActivity() {
                 listOfStudents = ArrayList()
                 displayList = ArrayList()
                 for (i in snapshot.children) {
-                    val newId = i.key?.toString()
+                    val newId = i.key!!.toLong()
                     Log.d("infoid", "O to id chodzi: ${newId}")
                     val newRow = i.getValue(DatabaseRow::class.java)
                     listOfItems.add(newRow!!)
-                    listOfStudents.add(Student(newId!!, newRow.poziom, newRow.ostatniaLekcja, newRow.stawka))
+                    listOfStudents.add(Student(newId!!, newRow.nazwa, newRow.poziom, newRow.ostatniaLekcja, newRow.stawka))
                 }
                 displayList.addAll(listOfStudents)
                 displayList.sortBy { it.nazwa }
@@ -91,7 +92,7 @@ class EditableListActivity : AppCompatActivity() {
         fun firebaseDelete(Dstudent: Student) {
             FirebaseDatabase.getInstance().getReference()
                 .child("ArrayData")
-                .child(Dstudent.nazwa.toString())
+                .child(Dstudent.id.toString())
                 .removeValue()
         }
 
@@ -106,7 +107,7 @@ class EditableListActivity : AppCompatActivity() {
                 val ostatniaLekcja = "Brak"
                 val stawka = "Brak"
                 val firebaseInput = DatabaseRow(imie, poziom, ostatniaLekcja, stawka)
-                myRef.child(imie).setValue(firebaseInput)
+                myRef.child("${Date().time}").setValue(firebaseInput)
             }).show()
         }
 

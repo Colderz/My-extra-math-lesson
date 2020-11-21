@@ -3,6 +3,7 @@ package pakiet.arkadiuszzimny.extralessonapp1
 
 import android.app.Dialog
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -32,7 +33,8 @@ class RecyclerAdapter2(private val dataArrayList: ArrayList<Student>) : Recycler
         holder.level.text = dataArrayList[holder.adapterPosition].poziom
         holder.lastDate.text = dataArrayList[holder.adapterPosition].ostatniaLekcja
         holder.standardCost.text = dataArrayList[holder.adapterPosition].stawka
-        //holder.studentId.text = dataArrayList[holder.adapterPosition].id.toString()
+        holder.idText.text = dataArrayList[holder.adapterPosition].id.toString()
+        Log.d("TAG", "To to id: ${dataArrayList[holder.adapterPosition].id}")
     }
 
 
@@ -42,7 +44,8 @@ class RecyclerAdapter2(private val dataArrayList: ArrayList<Student>) : Recycler
         val level: TextView
         val lastDate: TextView
         val standardCost: TextView
-        //val studentId: TextView
+        val idText: TextView
+
 
         init {
             profileImage = itemView.findViewById(R.id.profile_image)
@@ -50,15 +53,15 @@ class RecyclerAdapter2(private val dataArrayList: ArrayList<Student>) : Recycler
             level = itemView.findViewById(R.id.level)
             lastDate = itemView.findViewById(R.id.lastDate)
             standardCost = itemView.findViewById(R.id.standardCost)
-            //studentId = itemView.findViewById(R.id.studentId)
+            idText = itemView.findViewById(R.id.idText)
+
 
            itemView.setOnClickListener {
                val dialogView = LayoutInflater.from(parent.context).inflate(R.layout.dialog_layout, null)
                val builder = AlertDialog.Builder(parent.context, R.style.CustomDialog).setView(dialogView)
                builder.show()
-               val databaseReference = FirebaseDatabase.getInstance().getReference().child("ArrayData").child("iii")
+               val databaseReference = FirebaseDatabase.getInstance().getReference().child("ArrayData").child("${idText.text}")
                databaseReference.child("poziom").setValue("No coś jest")
-
            }
         }
     }

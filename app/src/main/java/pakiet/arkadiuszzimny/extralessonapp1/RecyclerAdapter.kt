@@ -1,5 +1,6 @@
 package pakiet.arkadiuszzimny.extralessonapp1
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -23,6 +24,8 @@ class RecyclerAdapter(private val dataArrayList: ArrayList<Student>): RecyclerVi
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.personName.text = dataArrayList[holder.adapterPosition].nazwa
+        holder.idTextEditable.text = dataArrayList[holder.adapterPosition].id.toString()
+        Log.d("TAG", "To to id: ${dataArrayList[holder.adapterPosition].id}")
 
     }
 
@@ -34,10 +37,12 @@ class RecyclerAdapter(private val dataArrayList: ArrayList<Student>): RecyclerVi
     inner class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
         val itemImage: ImageView
         val personName: TextView
+        val idTextEditable: TextView
 
         init {
             itemImage = itemView.findViewById(R.id.itemImage)
             personName = itemView.findViewById(R.id.personName)
+            idTextEditable = itemView.findViewById(R.id.textView)
         }
 
 
