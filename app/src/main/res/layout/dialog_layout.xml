@@ -16,6 +16,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Klaudia"
+            android:id="@+id/dialogName"
             android:textColor="@android:color/white"
             android:textStyle="bold"
             android:textSize="25sp"
@@ -74,7 +75,7 @@
             android:background="@color/lightGray" />
 
         <Button
-            android:id="@+id/saveInfo1"
+            android:id="@+id/saveButton"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:background="@android:color/white"
