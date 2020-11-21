@@ -1,5 +1,6 @@
 package pakiet.arkadiuszzimny.extralessonapp1
 
+import android.app.Dialog
 import android.content.Intent
 import android.graphics.Canvas
 import android.graphics.Color
@@ -8,10 +9,10 @@ import android.graphics.drawable.Drawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuItem
-import android.view.View
+import android.view.*
+import android.widget.Button
+import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.SearchView
@@ -48,9 +49,6 @@ class DisplayListActivity : AppCompatActivity() {
 
         recyclerView2.layoutManager = LinearLayoutManager(this)
         addButton.setOnClickListener {
-            //val dialogView = LayoutInflater.from(this).inflate(R.layout.newstudent_dialog_layout, null)
-            //val builder = AlertDialog.Builder(this, R.style.CustomDialog).setView(dialogView)
-            //builder.show()
             val intent = Intent(this, EditableListActivity::class.java)
             startActivity(intent)
         }
@@ -99,9 +97,9 @@ class DisplayListActivity : AppCompatActivity() {
         fun undoDeleted(position: Int) {
             Snackbar.make(recyclerView2, "Usunięto ucznia: ${deletedStudent.nazwa}", Snackbar.LENGTH_LONG).setAction("Cofnij", View.OnClickListener {
                 val nazwa = deletedStudent.nazwa
-                val poziom = "Brak"
-                val ostatniaLekcja = "Brak"
-                val stawka = "Brak"
+                val poziom = deletedStudent.poziom
+                val ostatniaLekcja = deletedStudent.ostatniaLekcja
+                val stawka = deletedStudent.stawka
                 val firebaseInput = DatabaseRow(nazwa, poziom, ostatniaLekcja, stawka)
                 myRef2.child("${Date().time}").setValue(firebaseInput)
             }).show()

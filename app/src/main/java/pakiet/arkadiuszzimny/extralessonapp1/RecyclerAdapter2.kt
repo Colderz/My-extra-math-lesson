@@ -38,7 +38,6 @@ class RecyclerAdapter2(private val dataArrayList: ArrayList<Student>) : Recycler
         holder.lastDate.text = dataArrayList[holder.adapterPosition].ostatniaLekcja
         holder.standardCost.text = dataArrayList[holder.adapterPosition].stawka
         holder.idText.text = dataArrayList[holder.adapterPosition].id.toString()
-        //holder.dialogName.text = dataArrayList[holder.adapterPosition].nazwa
         Log.d("TAG", "To to id: ${dataArrayList[holder.adapterPosition].id}")
     }
 
@@ -50,7 +49,6 @@ class RecyclerAdapter2(private val dataArrayList: ArrayList<Student>) : Recycler
         val lastDate: TextView
         val standardCost: TextView
         val idText: TextView
-        //val dialogName: TextView
 
 
         init {
@@ -60,12 +58,10 @@ class RecyclerAdapter2(private val dataArrayList: ArrayList<Student>) : Recycler
             lastDate = itemView.findViewById(R.id.lastDate)
             standardCost = itemView.findViewById(R.id.standardCost)
             idText = itemView.findViewById(R.id.idText)
-            //dialogName = itemView.findViewById(R.id.dialogName)
+
 
 
            itemView.setOnClickListener {
-               //val dialogView = LayoutInflater.from(parent.context).inflate(R.layout.dialog_layout, null)
-               //val builder = AlertDialog.Builder(parent.context, R.style.CustomDialog).setView(dialogView)
                val dialog = Dialog(parent.context, R.style.CustomDialog)
                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
                dialog.setContentView(R.layout.dialog_layout)
@@ -76,16 +72,18 @@ class RecyclerAdapter2(private val dataArrayList: ArrayList<Student>) : Recycler
                titleTV.text = name.text
                saveBtn.setOnClickListener {
                    dialog.dismiss()
-                   val level = levelET.text.toString()
-                   val cost = costET.text.toString()
                    val databaseReferenceDialog = FirebaseDatabase.getInstance().getReference().child("ArrayData").child("${idText.text}")
-                   databaseReferenceDialog.child("poziom").setValue(level)
-                   databaseReferenceDialog.child("stawka").setValue(cost)
+                   if(levelET.text.toString() != "") {
+                       val level = levelET.text.toString()
+                       databaseReferenceDialog.child("poziom").setValue(level)
+                   }
+                   if(costET.text.toString() != "") {
+                       val cost = costET.text.toString()
+                       databaseReferenceDialog.child("stawka").setValue(cost)
+                   }
+
                }
                dialog.show()
-
-               val databaseReference = FirebaseDatabase.getInstance().getReference().child("ArrayData").child("${idText.text}")
-               databaseReference.child("poziom").setValue("No coś jest")
            }
         }
     }

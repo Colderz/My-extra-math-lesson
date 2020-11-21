@@ -46,7 +46,7 @@ class EditableListActivity : AppCompatActivity() {
         recyclerView.layoutManager = LinearLayoutManager(this)
         buttonAdd.setOnClickListener {
             val nazwa = studentName.text.toString()
-            val poziom = "Brak"
+            val poziom = "Brak poziomu nauki"
             val ostatniaLekcja = "Brak"
             val stawka = "Brak"
             val firebaseInput = DatabaseRow(nazwa, poziom, ostatniaLekcja, stawka)
@@ -103,9 +103,9 @@ class EditableListActivity : AppCompatActivity() {
                 Snackbar.LENGTH_LONG
             ).setAction("Cofnij", View.OnClickListener {
                 val imie = deletedStudent.nazwa
-                val poziom = "Brak"
-                val ostatniaLekcja = "Brak"
-                val stawka = "Brak"
+                val poziom = deletedStudent.poziom
+                val ostatniaLekcja = deletedStudent.ostatniaLekcja
+                val stawka = deletedStudent.stawka
                 val firebaseInput = DatabaseRow(imie, poziom, ostatniaLekcja, stawka)
                 myRef.child("${Date().time}").setValue(firebaseInput)
             }).show()
