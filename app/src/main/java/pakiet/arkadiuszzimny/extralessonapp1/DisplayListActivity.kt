@@ -1,5 +1,6 @@
 package pakiet.arkadiuszzimny.extralessonapp1
 
+import android.content.Intent
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
@@ -47,9 +48,11 @@ class DisplayListActivity : AppCompatActivity() {
 
         recyclerView2.layoutManager = LinearLayoutManager(this)
         addButton.setOnClickListener {
-            val dialogView = LayoutInflater.from(this).inflate(R.layout.newstudent_dialog_layout, null)
-            val builder = AlertDialog.Builder(this, R.style.CustomDialog).setView(dialogView)
-            builder.show()
+            //val dialogView = LayoutInflater.from(this).inflate(R.layout.newstudent_dialog_layout, null)
+            //val builder = AlertDialog.Builder(this, R.style.CustomDialog).setView(dialogView)
+            //builder.show()
+            val intent = Intent(this, EditableListActivity::class.java)
+            startActivity(intent)
         }
 
         myRef2.addValueEventListener(object: ValueEventListener {
@@ -60,7 +63,7 @@ class DisplayListActivity : AppCompatActivity() {
                 listOfStudents = ArrayList()
                 displayList = ArrayList()
                 for (i in snapshot.children) {
-                    val newId = i.key?.toString()
+                    val newId = i.key!!
                     Log.d("infoid", "O to id chodzi: ${newId}")
                     val newRow = i.getValue(DatabaseRow::class.java)
                     listOfItems.add(newRow!!)

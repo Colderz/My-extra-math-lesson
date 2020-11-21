@@ -33,8 +33,8 @@
             app:fabAlignmentMode="center"
             app:fabCradleMargin="8dp"
             app:hideOnScroll="true"
-            app:fabCradleRoundedCornerRadius="25dp"
-            app:fabCradleVerticalOffset="3dp"
+            app:fabCradleRoundedCornerRadius="85dp"
+            app:fabCradleVerticalOffset="1dp"
             android:backgroundTint="@color/colorPrimary"
             app:menu="@menu/app_bar_menu"
             app:navigationIcon="@drawable/ic_menu" />
