@@ -47,10 +47,8 @@ class EditableListActivity : AppCompatActivity() {
         buttonAdd.setOnClickListener {
             val nazwa = studentName.text.toString()
             val poziom = "Brak poziomu nauki"
-            val ostatniaLekcja = "Brak"
             val stawka = "Brak"
-            val firebaseInput = DatabaseRow(nazwa, poziom, ostatniaLekcja, stawka)
-            //myRef.child(nazwa).setValue(firebaseInput)
+            val firebaseInput = DatabaseRow(nazwa, poziom, stawka)
             myRef.child("${Date().time}").setValue(firebaseInput)
             studentName.text.clear()
         }
@@ -67,7 +65,7 @@ class EditableListActivity : AppCompatActivity() {
                     Log.d("infoid", "O to id chodzi: ${newId}")
                     val newRow = i.getValue(DatabaseRow::class.java)
                     listOfItems.add(newRow!!)
-                    listOfStudents.add(Student(newId!!, newRow.nazwa, newRow.poziom, newRow.ostatniaLekcja, newRow.stawka))
+                    listOfStudents.add(Student(newId!!, newRow.nazwa, newRow.poziom, newRow.stawka))
                 }
                 displayList.addAll(listOfStudents)
                 displayList.sortBy { it.nazwa }
@@ -104,9 +102,8 @@ class EditableListActivity : AppCompatActivity() {
             ).setAction("Cofnij", View.OnClickListener {
                 val imie = deletedStudent.nazwa
                 val poziom = deletedStudent.poziom
-                val ostatniaLekcja = deletedStudent.ostatniaLekcja
                 val stawka = deletedStudent.stawka
-                val firebaseInput = DatabaseRow(imie, poziom, ostatniaLekcja, stawka)
+                val firebaseInput = DatabaseRow(imie, poziom, stawka)
                 myRef.child("${Date().time}").setValue(firebaseInput)
             }).show()
         }
@@ -162,13 +159,13 @@ class EditableListActivity : AppCompatActivity() {
                     itemView.bottom - iconMargin
                 )
             }
-
             swipeBackground.draw(c)
             deleteIcon.draw(c)
 
             super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
         }
     }
+
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.search_menu, menu)
         var item: MenuItem = menu!!.findItem(R.id.action_search)
@@ -198,13 +195,10 @@ class EditableListActivity : AppCompatActivity() {
                     }
                     return true
                 }
-
             })
         }
-
         return super.onCreateOptionsMenu(menu)
     }
-
 
     private fun setupAdapter(arrayData: ArrayList<Student>) {
         recyclerAdapter = RecyclerAdapter(arrayData)

@@ -15,9 +15,7 @@ class MainActivity : AppCompatActivity() {
         supportActionBar?.hide()
 
         val listCard = findViewById<CardView>(R.id.list_card)
-        val formulaCard = findViewById<CardView>(R.id.formula_card)
         val editCard = findViewById<CardView>(R.id.edit_card)
-        val moneyCard = findViewById<CardView>(R.id.money_card)
 
         listCard.setOnClickListener {
             val listIntent = Intent(this, DisplayListActivity::class.java)

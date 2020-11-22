@@ -11,8 +11,6 @@ import androidx.recyclerview.widget.RecyclerView
 
 class RecyclerAdapter(private val dataArrayList: ArrayList<Student>): RecyclerView.Adapter<RecyclerAdapter.ViewHolder>(){
 
-    //private var students: MutableList<String> = dataArrayList
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val v = LayoutInflater.from(parent.context).inflate(R.layout.editablecard_layout, parent, false)
         return ViewHolder(v)
@@ -28,12 +26,6 @@ class RecyclerAdapter(private val dataArrayList: ArrayList<Student>): RecyclerVi
         Log.d("TAG", "To to id: ${dataArrayList[holder.adapterPosition].id}")
 
     }
-
-    fun deleteItem(pos: Int) {
-        dataArrayList.removeAt(pos)
-        notifyItemRemoved(pos)
-    }
-
     inner class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
         val itemImage: ImageView
         val personName: TextView
@@ -44,8 +36,6 @@ class RecyclerAdapter(private val dataArrayList: ArrayList<Student>): RecyclerVi
             personName = itemView.findViewById(R.id.personName)
             idTextEditable = itemView.findViewById(R.id.textView)
         }
-
-
     }
 
 }

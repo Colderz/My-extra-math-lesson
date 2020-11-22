@@ -24,7 +24,7 @@
             tools:listitem="@layout/studentcard_layout">
         </androidx.recyclerview.widget.RecyclerView>
         </LinearLayout>
-        
+
         <com.google.android.material.bottomappbar.BottomAppBar
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -36,8 +36,7 @@
             app:fabCradleRoundedCornerRadius="85dp"
             app:fabCradleVerticalOffset="1dp"
             android:backgroundTint="@color/colorPrimary"
-            app:menu="@menu/app_bar_menu"
-            app:navigationIcon="@drawable/ic_menu" />
+            app:menu="@menu/app_bar_menu" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/addButton"

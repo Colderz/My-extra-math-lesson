@@ -1,6 +1,5 @@
 package pakiet.arkadiuszzimny.extralessonapp1
 
-import android.app.Dialog
 import android.content.Intent
 import android.graphics.Canvas
 import android.graphics.Color
@@ -8,13 +7,7 @@ import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.*
-import android.widget.Button
-import android.widget.EditText
-import android.widget.TextView
-import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.SearchView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -23,9 +16,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.activity_display_list.*
-import kotlinx.android.synthetic.main.activity_editable_list.*
-import kotlinx.android.synthetic.main.dialog_layout.*
-import kotlinx.android.synthetic.main.newstudent_dialog_layout.*
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -38,6 +28,7 @@ class DisplayListActivity : AppCompatActivity() {
     private lateinit var recyclerAdapter: RecyclerAdapter2
     private lateinit var deletedStudent: Student
     private lateinit var deleteIcon: Drawable
+
     private var swipeBackground: ColorDrawable = ColorDrawable(Color.parseColor("#fcfcfc"))
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -62,10 +53,9 @@ class DisplayListActivity : AppCompatActivity() {
                 displayList = ArrayList()
                 for (i in snapshot.children) {
                     val newId = i.key!!.toLong()
-                    //Log.d("infoid", "O to id chodzi: ${newId}")
                     val newRow = i.getValue(DatabaseRow::class.java)
                     listOfItems.add(newRow!!)
-                    listOfStudents.add(Student(newId!!, newRow.nazwa, newRow.poziom, newRow.ostatniaLekcja, newRow.stawka))
+                    listOfStudents.add(Student(newId!!, newRow.nazwa, newRow.poziom, newRow.stawka))
                 }
                 displayList.addAll(listOfStudents)
                 displayList.sortBy { it.nazwa }
@@ -98,9 +88,8 @@ class DisplayListActivity : AppCompatActivity() {
             Snackbar.make(recyclerView2, "Usunięto ucznia: ${deletedStudent.nazwa}", Snackbar.LENGTH_LONG).setAction("Cofnij", View.OnClickListener {
                 val nazwa = deletedStudent.nazwa
                 val poziom = deletedStudent.poziom
-                val ostatniaLekcja = deletedStudent.ostatniaLekcja
                 val stawka = deletedStudent.stawka
-                val firebaseInput = DatabaseRow(nazwa, poziom, ostatniaLekcja, stawka)
+                val firebaseInput = DatabaseRow(nazwa, poziom, stawka)
                 myRef2.child("${Date().time}").setValue(firebaseInput)
             }).show()
         }
@@ -178,10 +167,8 @@ class DisplayListActivity : AppCompatActivity() {
                     }
                     return true
                 }
-
             })
         }
-
         return super.onCreateOptionsMenu(menu)
     }
 
@@ -189,15 +176,4 @@ class DisplayListActivity : AppCompatActivity() {
         recyclerAdapter = RecyclerAdapter2(arrayData)
         recyclerView2.adapter = RecyclerAdapter2(arrayData)
     }
-
-    fun addStudentInfo(view: View) {
-        val nazwa = studentNameDialog.text.toString()
-        val poziom = studentLevel.text.toString()
-        val ostatniaLekcja = "Brak"
-        val stawka = studentCostDialog.text.toString()
-        val firebaseInput = DatabaseRow(nazwa, poziom, ostatniaLekcja, stawka)
-        myRef2.child(nazwa).setValue(firebaseInput)
-        studentNameDialog.text.clear()
-        studentLevel.text.clear()
-        studentCostDialog.text.clear()}
 }

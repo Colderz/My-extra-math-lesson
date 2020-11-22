@@ -1,31 +1,37 @@
 package pakiet.arkadiuszzimny.extralessonapp1
 
 
+import android.app.AlarmManager
+import android.app.DatePickerDialog
 import android.app.Dialog
+import android.app.PendingIntent
 import android.content.Context
+import android.content.Intent
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
-import android.widget.Button
-import android.widget.EditText
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.appcompat.app.AlertDialog
+import androidx.cardview.widget.CardView
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import de.hdodenhof.circleimageview.CircleImageView
+import kotlinx.android.synthetic.main.studentcard_layout.*
 import kotlinx.android.synthetic.main.studentcard_layout.view.*
 import org.w3c.dom.Text
+import java.util.*
+import kotlin.collections.ArrayList
 
 class RecyclerAdapter2(private val dataArrayList: ArrayList<Student>) : RecyclerView.Adapter<RecyclerAdapter2.ViewHolder>() {
-
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val v = LayoutInflater.from(parent.context).inflate(R.layout.studentcard_layout, parent, false)
         return ViewHolder(v, parent)
+
     }
 
     override fun getItemCount(): Int {
@@ -35,7 +41,6 @@ class RecyclerAdapter2(private val dataArrayList: ArrayList<Student>) : Recycler
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.name.text = dataArrayList[holder.adapterPosition].nazwa
         holder.level.text = dataArrayList[holder.adapterPosition].poziom
-        holder.lastDate.text = dataArrayList[holder.adapterPosition].ostatniaLekcja
         holder.standardCost.text = dataArrayList[holder.adapterPosition].stawka
         holder.idText.text = dataArrayList[holder.adapterPosition].id.toString()
         Log.d("TAG", "To to id: ${dataArrayList[holder.adapterPosition].id}")
@@ -46,7 +51,6 @@ class RecyclerAdapter2(private val dataArrayList: ArrayList<Student>) : Recycler
         val profileImage: CircleImageView
         val name: TextView
         val level: TextView
-        val lastDate: TextView
         val standardCost: TextView
         val idText: TextView
 
@@ -55,10 +59,8 @@ class RecyclerAdapter2(private val dataArrayList: ArrayList<Student>) : Recycler
             profileImage = itemView.findViewById(R.id.profile_image)
             name = itemView.findViewById(R.id.name)
             level = itemView.findViewById(R.id.level)
-            lastDate = itemView.findViewById(R.id.lastDate)
             standardCost = itemView.findViewById(R.id.standardCost)
             idText = itemView.findViewById(R.id.idText)
-
 
 
            itemView.setOnClickListener {
@@ -81,7 +83,6 @@ class RecyclerAdapter2(private val dataArrayList: ArrayList<Student>) : Recycler
                        val cost = costET.text.toString()
                        databaseReferenceDialog.child("stawka").setValue(cost)
                    }
-
                }
                dialog.show()
            }
