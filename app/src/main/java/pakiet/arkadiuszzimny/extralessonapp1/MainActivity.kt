@@ -2,9 +2,10 @@ package pakiet.arkadiuszzimny.extralessonapp1
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
+import pakiet.arkadiuszzimny.extralessonapp1.viewModel.DisplayListActivity
+import pakiet.arkadiuszzimny.extralessonapp1.viewModel.EditableListActivity
 
 class MainActivity : AppCompatActivity() {
 

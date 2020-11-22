@@ -1,29 +1,18 @@
-package pakiet.arkadiuszzimny.extralessonapp1
+package pakiet.arkadiuszzimny.extralessonapp1.adapters
 
 
-import android.app.AlarmManager
-import android.app.DatePickerDialog
 import android.app.Dialog
-import android.app.PendingIntent
-import android.content.Context
-import android.content.Intent
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
 import android.widget.*
-import androidx.appcompat.app.AlertDialog
-import androidx.cardview.widget.CardView
-import androidx.core.content.ContextCompat.getSystemService
 import androidx.recyclerview.widget.RecyclerView
-import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import de.hdodenhof.circleimageview.CircleImageView
-import kotlinx.android.synthetic.main.studentcard_layout.*
-import kotlinx.android.synthetic.main.studentcard_layout.view.*
-import org.w3c.dom.Text
-import java.util.*
+import pakiet.arkadiuszzimny.extralessonapp1.R
+import pakiet.arkadiuszzimny.extralessonapp1.model.Student
 import kotlin.collections.ArrayList
 
 class RecyclerAdapter2(private val dataArrayList: ArrayList<Student>) : RecyclerView.Adapter<RecyclerAdapter2.ViewHolder>() {
@@ -64,7 +53,9 @@ class RecyclerAdapter2(private val dataArrayList: ArrayList<Student>) : Recycler
 
 
            itemView.setOnClickListener {
-               val dialog = Dialog(parent.context, R.style.CustomDialog)
+               val dialog = Dialog(parent.context,
+                   R.style.CustomDialog
+               )
                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
                dialog.setContentView(R.layout.dialog_layout)
                val saveBtn = dialog.findViewById<Button>(R.id.saveButton)

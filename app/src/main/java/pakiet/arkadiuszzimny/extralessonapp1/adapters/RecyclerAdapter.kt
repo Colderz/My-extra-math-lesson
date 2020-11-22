@@ -1,4 +1,4 @@
-package pakiet.arkadiuszzimny.extralessonapp1
+package pakiet.arkadiuszzimny.extralessonapp1.adapters
 
 import android.util.Log
 import android.view.LayoutInflater
@@ -6,8 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
+import pakiet.arkadiuszzimny.extralessonapp1.R
+import pakiet.arkadiuszzimny.extralessonapp1.model.Student
 
 class RecyclerAdapter(private val dataArrayList: ArrayList<Student>): RecyclerView.Adapter<RecyclerAdapter.ViewHolder>(){
 

@@ -1,4 +1,4 @@
-package pakiet.arkadiuszzimny.extralessonapp1
+package pakiet.arkadiuszzimny.extralessonapp1.model
 
 data class DatabaseRow(
     val nazwa: String = "",
