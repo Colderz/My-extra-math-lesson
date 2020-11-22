@@ -8,9 +8,9 @@ By saving the amount and displaying everything in an intuitive and clear view, w
 
 # Screenshots
 
-![N|Solid](https://i.imgur.com/RjbdwOA.jpg) ![N|Solid](https://i.imgur.com/IyIVDCg.jpg) ![N|Solid](https://i.imgur.com/wYjCVXp.jpg) 
+![N|Solid](https://i.imgur.com/oUAqngz.jpg) ![N|Solid](https://i.imgur.com/dhgl2QQ.jpg) ![N|Solid](https://i.imgur.com/kYEo1hp.jpg)
 
-![N|Solid](https://i.imgur.com/VOPYvEz.jpg) ![N|Solid](https://i.imgur.com/Y9ehN4A.jpg)
+ ![N|Solid](https://i.imgur.com/HDf3R9z.jpg) ![N|Solid](https://i.imgur.com/5ks5r9s.jpg)
 
 # Documentation of the app
 
